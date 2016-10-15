@@ -22,7 +22,7 @@ npm start
 
 ## Configuring debug
 
-To automatically refresh files, click the **File > Preferences > Keyboard Shortcuts** menu, and insert the following code into the **keybindings.json** file:
+To automatically compile files on save, click the **File > Preferences > Keyboard Shortcuts** menu in VSCode, and insert the following code into the **keybindings.json** file:
 ```
 [
     {
@@ -33,7 +33,7 @@ To automatically refresh files, click the **File > Preferences > Keyboard Shortc
 ```
 
 Create **gulpfile.js**:
-```
+```JavaScript
 'use strict';
 
 var gulp = require('gulp');
@@ -75,7 +75,7 @@ If Chrome cannot be started make sure to correct the path inside **gulpfile.js**
 ## Creating server files
 
 Create **server/bin/www**:
-```
+```JavaScript
 #!/usr/bin/env node
 "use strict";
 
@@ -162,7 +162,7 @@ function onListening() {
 
 
 Create **server/routes/api.ts**:
-```
+```JavaScript
 var express = require('express');
 var router = express.Router();
 
@@ -176,7 +176,7 @@ module.exports = router;
 
 
 Create **server/app.js**:
-```
+```JavaScript
 "use strict";
 
 const bodyParser = require("body-parser");
@@ -235,7 +235,7 @@ module.exports = server.app;
 ## Creating client files
 
 Create **client/index.html**:
-```
+```html
 <html>
   <head>
     <base href="/"> 
@@ -311,7 +311,7 @@ Create **client/index.html**:
 
 
 Create **client/systemjs.config.js**:
-```
+```JavaScript
 /**
  * System configuration for Angular samples
  * Adjust as necessary for your application needs.
@@ -360,7 +360,7 @@ Create **client/systemjs.config.js**:
 
 
 Create **client/rxjs-extensions.ts**:
-```
+```JavaScript
 // Observable class extensions
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
@@ -377,7 +377,7 @@ import 'rxjs/add/operator/switchMap';
 
 
 Create **client/main.ts**:
-```
+```JavaScript
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app.module';
 
@@ -388,7 +388,7 @@ platform.bootstrapModule(AppModule);
 
 
 Create **client/app.module.ts**:
-```
+```JavaScript
 import './rxjs-extensions';
 
 import { NgModule }      from '@angular/core';
@@ -420,7 +420,7 @@ export class AppModule { }
 
 
 Create **client/app-routing.module.ts**:
-```
+```JavaScript
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -437,7 +437,7 @@ export class AppRoutingModule {}
 
 
 Create **client/app.component.ts**:
-```
+```JavaScript
 import { Component } from "@angular/core";
 
 @Component({
