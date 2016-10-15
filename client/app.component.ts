@@ -5,12 +5,11 @@ import { Component } from "@angular/core";
     selector: 'my-app',
     template: `
     <h1>{{title}}</h1>
-    hello<br>
-    world<br>
+    hello123367<br>
+    world2233<br>
     <input [(ngModel)]="title" placeholder="name" />
-
-    `,
-    styleUrls: ['app.component.css'],
+    <button type="submit" class="btn btn-default">Submit</button>
+    `
 })
 export class AppComponent {
   title = 'Angular 2 sample application';

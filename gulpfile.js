@@ -4,16 +4,7 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 
-gulp.task('default', ['browser-sync'], function () {
-});
-
-gulp.task('browser-sync', ['nodemon'], function() {
-	browserSync.init(null, {
-		proxy: "http://localhost:3000",
-        files: ["app/**/*.*"],
-        browser: "c:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-        port: 7000,
-	});
+gulp.task('default', ['nodemon'], function () {
 });
 
 gulp.task('nodemon', function (cb) {
@@ -28,6 +19,12 @@ gulp.task('nodemon', function (cb) {
 		if (!started) {
 			cb();
 			started = true; 
+			browserSync.init(null, {
+				proxy: "http://localhost:3000",
+				files: ["client/**/*.*"],
+				browser: "c:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+				port: 7000,
+			});
 		} 
 	});
 });

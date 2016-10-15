@@ -23,7 +23,10 @@ class Server {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(cookieParser());
-        this.app.use(express.static(staticRoot));
+        this.app.use("/bower_components", express.static(path.join(__dirname, "/../bower_components")));
+        this.app.use("/node_modules", express.static(path.join(__dirname, "/../node_modules")));
+        this.app.use("/client", express.static(path.join(__dirname, "/../client/")));
+        this.app.use("/", express.static(path.join(__dirname, "/../client/")));
         this.app.use(function (err, req, res, next) {
             console.log('Processing request...');
 
