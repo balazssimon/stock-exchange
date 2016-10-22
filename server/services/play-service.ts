@@ -1,5 +1,6 @@
 import { Play } from '../play';
-import { Game, Stock, Rate } from '../entities';
+import { Game, Stock, Rate, News } from '../entities';
+import { calculateStockIndex } from '../../common/data';
 import * as mongoose from 'mongoose';
 
 var express = require('express');
@@ -12,37 +13,46 @@ let play: Play = config.Play;
 router.use('/players', playersService);
 
 router.post('/new', function (req, res) {
-    Stock.find((err, stock) => {
+    Stock.find((err, dbStocks) => {
         if (err) {
             res.json({info: 'error during create: could not find stocks', error: err});
             return;
-        };
-        let newGame = new Game(req.body);
-        let savedRates = [];
-        let error = null;
-        savedRates.length = stock.length;
-        for (let i = 0; i < stock.length; ++i) {
-            savedRates[i] = new Rate({ stock: stock[i].id });
-            newGame.rates[i] = savedRates[i].id;
         }
-        newGame.save((err)=>{
-            if (err){
-                error = err;
+        News.find((err, dbNews) => {
+            if (err) {
+                res.json({info: 'error during create: could not find news', error: err});
+                return;
             }
-        });
-        play.setGame(newGame, savedRates); 
-        for (let i = 0; i < savedRates.length; ++i) {
-            savedRates[i].save((err)=>{
+            let stockIndex = calculateStockIndex(dbStocks);
+            let stocks = stockIndex.stocks;
+            let newGame = new Game(req.body);
+            let savedRates = [];
+            let error = null;
+            newGame.initValues = {money: 1000, stockCount: 200, stockPrice: 100};
+            savedRates.length = stocks.length;
+            for (let i = 0; i < stocks.length; ++i) {
+                savedRates[i] = new Rate({ stock: stocks[i].id });
+                newGame.rates[i] = savedRates[i].id;
+            }
+            newGame.save((err)=>{
                 if (err){
                     error = err;
                 }
             });
-        }
-        if (error) {
-            res.json({info: 'error during create: could not find stocks', error: error});
-        } else {
-            res.json({info: 'new game created', data: newGame});
-        }
+            play.setGame(newGame, stockIndex, savedRates, dbNews); 
+            for (let i = 0; i < savedRates.length; ++i) {
+                savedRates[i].save((err)=>{
+                    if (err){
+                        error = err;
+                    }
+                });
+            }
+            if (error) {
+                res.json({info: 'error during create: could not find stocks', error: error});
+            } else {
+                res.json({info: 'new game created', data: newGame});
+            }
+        });
     });
 });
 
@@ -69,7 +79,7 @@ router.post('/stop', function (req, res) {
 router.post('/end', function (req, res) {
     play.end();
     let game = play.getGame();
-    play.setGame(null, null);
+    play.setGame(null, null, null, null);
     if (game) {
         let saveGame = new Game(game); 
         saveGame.save((err)=>{

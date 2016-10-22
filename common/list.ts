@@ -25,7 +25,7 @@ export class List<T> {
     }
 
     public count(): number {
-        return this._items.length;
+        return this._count;
     }
 
     public isEmpty(): boolean {
@@ -36,18 +36,24 @@ export class List<T> {
         this._count = 0;
     }
 
+    public contains(item: T): boolean {
+        return this.indexOf(item) >= 0;
+    }
+
     public add(item: T): void {
-        this.ensureCapacity(this._capacity+1);
+        this.ensureCapacity(this._count+1);
         this._items[this._count] = item;
         ++this._count;
     }
 
     public addRange(items: T[]): void {
-        this.ensureCapacity(this._capacity+items.length);
-        for (var i = 0; i < items.length; ++i) {
-            this._items[this._count+i] = items[i];
+        if (items) {
+            this.ensureCapacity(this._count+items.length);
+            for (var i = 0; i < items.length; ++i) {
+                this._items[this._count+i] = items[i];
+            }
+            this._count += items.length;
         }
-        this._count += items.length;
     }
 
     public delete(index: number): T {
@@ -58,6 +64,14 @@ export class List<T> {
                 this._items[i] = this._items[i+1];
             }
             --this._count;
+        }
+        return result;
+    }
+
+    public truncate(index: number): T {
+        var result: T = null;
+        if (index >= 0 && index < this._count) {
+            this._count = index;
         }
         return result;
     }
@@ -78,7 +92,7 @@ export class List<T> {
             fromIndex = Math.max(0, this._items.length + fromIndex);
         }
         for (var i = fromIndex, j = this._items.length; i < j; i++) {
-            if (this._items[i] === item)
+            if (this._items[i] == item)
                 return i;
         }
         return -1;

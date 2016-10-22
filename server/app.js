@@ -85,10 +85,20 @@ class Server {
         config.Mongoose = mongoose.connect(mongoURI, options);
     }
     timer() {
-        setInterval(function(){
-            config.Play.run();
-        }, 10 * 1000);  
+        setTimeout(gameloop, 5 * 1000);
     }
 }
+
+function gameloop() {
+    try {
+        config.Play.run();
+    //} catch(ex) {
+    //    console.log(ex);
+    } finally {
+        setTimeout(gameloop, 5 * 1000);
+    }
+}
+
+
 var server = Server.bootstrap();
 module.exports = server.app;

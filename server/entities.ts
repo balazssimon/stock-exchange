@@ -21,7 +21,7 @@ let GameSchema = new mongoose.Schema({
         transactions: [{kind: { type: String, enum : ['0', '1'] }, time: Number, stock: String, count: Number }]
     }],
     rates: [String],
-    currentNews: { news: [String], time: Number },
+    currentNews: [ { news: [String], time: Number } ],
     preprogrammedNews: [ { news: [String], time: Number } ],
     publishedNews: [ { news: [String], time: Number } ]
 });
